@@ -1,4 +1,6 @@
 ﻿using DevagramCSharp.Dtos;
+using DevagramCSharp.Models;
+using DevagramCSharp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,11 +33,18 @@ namespace DevagramCSharp.Controllers
 
                     if (loginrequisicao.Email == email && loginrequisicao.Senha == senha)
                     {
+                        Usuario usuario = new Usuario()
+                        {
+                            Email = loginrequisicao.Email,
+                            Id = 12,
+                            Nome = "Joás Camargo"
+                        };
+                        
                         return Ok(new LoginRepostaDto()
                         {
-                            Email = email,
-                            Nome = "Joás Camargo",
-                            Token = ""
+                            Email = usuario.Email,
+                            Nome = usuario.Nome,
+                            Token = TokenService.CriarToken(usuario)
                         });
                     }
                     else
