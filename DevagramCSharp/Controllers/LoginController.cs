@@ -23,7 +23,38 @@ namespace DevagramCSharp.Controllers
         {
             try
             {
-                throw new ArgumentException("Erro ao preencher os dados");
+                if(!String.IsNullOrEmpty(loginrequisicao.Senha) && !String.IsNullOrEmpty(loginrequisicao.Email) &&
+                    !String.IsNullOrWhiteSpace(loginrequisicao.Senha) && !String.IsNullOrWhiteSpace(loginrequisicao.Email))
+                {
+                    string email = "joas@devaria.com.br";
+                    string senha = "Senha@123";
+
+                    if (loginrequisicao.Email == email && loginrequisicao.Senha == senha)
+                    {
+                        return Ok(new LoginRepostaDto()
+                        {
+                            Email = email,
+                            Nome = "Joás Camargo",
+                            Token = ""
+                        });
+                    }
+                    else
+                    {
+                        return BadRequest(new ErrorRepostaDto()
+                        {
+                            Descricao = "Email ou senha inválido!",
+                            Status = StatusCodes.Status400BadRequest
+                        });
+                    }
+                }
+                else
+                {
+                    return BadRequest(new ErrorRepostaDto()
+                    {
+                        Descricao = "Usuario não preencheu os campos de login corretamente",
+                        Status = StatusCodes.Status400BadRequest
+                    });
+                }
             }
             catch (Exception ex)
             {
