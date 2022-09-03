@@ -1,6 +1,8 @@
 ﻿using DevagramCSharp.Dtos;
 using DevagramCSharp.Models;
+using DevagramCSharp.Repository;
 using DevagramCSharp.Services;
+using DevagramCSharp.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +15,11 @@ namespace DevagramCSharp.Controllers
     {
 
         private readonly ILogger<LoginController> _logger;
-
-        public LoginController (ILogger<LoginController> logger)
+        private readonly IUsuarioRepository _usuarioRepository;
+        public LoginController(ILogger<LoginController> logger, IUsuarioRepository usuarioRepository)
         {
             _logger = logger;
+            _usuarioRepository = usuarioRepository;
         }
 
         [HttpPost]
@@ -25,22 +28,15 @@ namespace DevagramCSharp.Controllers
         {
             try
             {
-                if(!String.IsNullOrEmpty(loginrequisicao.Senha) && !String.IsNullOrEmpty(loginrequisicao.Email) &&
+                if (!String.IsNullOrEmpty(loginrequisicao.Senha) && !String.IsNullOrEmpty(loginrequisicao.Email) &&
                     !String.IsNullOrWhiteSpace(loginrequisicao.Senha) && !String.IsNullOrWhiteSpace(loginrequisicao.Email))
                 {
-                    string email = "joas@devaria.com.br";
-                    string senha = "Senha@123";
 
-                    if (loginrequisicao.Email == email && loginrequisicao.Senha == senha)
+                    Usuario usuario = _usuarioRepository.GetUsuarioPorLoginSenha(loginrequisicao.Email.ToLower(), MD5Utils.GerarHashMD5(loginrequisicao.Senha));
+                    
+                    if(usuario != null)
                     {
-                        Usuario usuario = new Usuario()
-                        {
-                            Email = loginrequisicao.Email,
-                            Id = 12,
-                            Nome = "Joás Camargo"
-                        };
-                        
-                        return Ok(new LoginRepostaDto()
+                        return Ok(new LoginRespostaDto()
                         {
                             Email = usuario.Email,
                             Nome = usuario.Nome,
@@ -55,6 +51,7 @@ namespace DevagramCSharp.Controllers
                             Status = StatusCodes.Status400BadRequest
                         });
                     }
+
                 }
                 else
                 {
@@ -76,7 +73,7 @@ namespace DevagramCSharp.Controllers
 
             }
 
-       }
+        }
 
     }
 }

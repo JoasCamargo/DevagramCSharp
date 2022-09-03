@@ -12,13 +12,12 @@ namespace DevagramCSharp.Controllers
     {
 
         public readonly ILogger<UsuarioController> _logger;
-        public readonly IUsuarioRepository _usuarioRepository;
 
 
-        public UsuarioController(ILogger<UsuarioController> logger, IUsuarioRepository usuarioRepository)
+        public UsuarioController(ILogger<UsuarioController> logger,
+            IUsuarioRepository usuarioRepository) : base(usuarioRepository)
         {
             _logger = logger;
-            _usuarioRepository = usuarioRepository;
         }
 
         [HttpGet]
@@ -26,14 +25,14 @@ namespace DevagramCSharp.Controllers
         {
             try
             {
-                Usuario usuario = new Usuario()
-                {
-                    Email = "joas@devaria.com.br",
-                    Nome = "Joás Camargo",
-                    Id = 100
-                };
 
-                return Ok(usuario);
+                Usuario usuario = LerToken();
+
+                return Ok(new UsuarioRespostaDto
+                { 
+                    Nome = usuario.Nome,
+                    Email = usuario.Email
+                });
             }
             catch (Exception e)
             {
@@ -48,6 +47,7 @@ namespace DevagramCSharp.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult SalvarUsuario([FromBody] Usuario usuario)
         {
             try
@@ -101,7 +101,7 @@ namespace DevagramCSharp.Controllers
 
 
 
-                return Ok(usuario);
+                return Ok("Usuário foi salvo com sucesso");
             }
             catch (Exception e)
             {

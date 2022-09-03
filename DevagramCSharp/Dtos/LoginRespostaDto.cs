@@ -1,6 +1,6 @@
 ﻿namespace DevagramCSharp.Dtos
 {
-    public class LoginRepostaDto
+    public class LoginRespostaDto
     {
         public string Nome { get; set; }
         public string Email { get; set; }
