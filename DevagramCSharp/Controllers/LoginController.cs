@@ -62,9 +62,9 @@ namespace DevagramCSharp.Controllers
                     });
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                _logger.LogError("Ocorreu um erro no login: " + ex.Message);
+                _logger.LogError("Ocorreu um erro no login: " + e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorRepostaDto()
                 {
                     Descricao = "Ocorreu um erro ao fazer o login",

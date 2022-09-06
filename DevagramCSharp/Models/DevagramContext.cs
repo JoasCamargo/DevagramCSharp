@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net.Security;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevagramCSharp.Models
 {
@@ -10,5 +11,6 @@ namespace DevagramCSharp.Models
 
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Seguidor> Seguidores { get; set; }
     }
 }
