@@ -21,6 +21,7 @@ builder.Services.AddDbContext<DevagramContext>(options => options.UseSqlServer(c
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepositoryImpl>();
 builder.Services.AddScoped<ISeguidorRepository, SeguidorRepositoryImpl>();
+builder.Services.AddScoped<IPublicacaoRepository, PublicacaoRepositoryImpl>();
 
 var chaveCriptografia = Encoding.ASCII.GetBytes(ChaveJWT.ChaveSecreta);
 builder.Services.AddAuthentication(auth =>
